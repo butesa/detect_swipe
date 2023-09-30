@@ -44,11 +44,14 @@
       var dy = startY - y;
       var dir;
       var ratio = window.devicePixelRatio || 1;
-      if(Math.abs(dx) * ratio >= $.detectSwipe.threshold) {
-        dir = dx > 0 ? 'left' : 'right'
-      }
-      else if(Math.abs(dy) * ratio >= $.detectSwipe.threshold) {
-        dir = dy > 0 ? 'up' : 'down'
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if(Math.abs(dx) * ratio >= $.detectSwipe.threshold) {
+          dir = dx > 0 ? 'left' : 'right'
+        }
+      } else {
+        if(Math.abs(dy) * ratio >= $.detectSwipe.threshold) {
+          dir = dy > 0 ? 'up' : 'down'
+        }
       }
       if(dir) {
         onTouchEnd.call(this);
