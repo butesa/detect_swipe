@@ -79,14 +79,21 @@
   }
 
   function teardown() {
-    this.removeEventListener('touchstart', onTouchStart);
+    this.removeEventListener && this.removeEventListener('touchstart', onTouchStart);
   }
 
-  $.event.special.swipe = { setup: setup };
+  $.event.special.swipe = { setup: setup, teardown: teardown };
 
-  $.each(['left', 'up', 'down', 'right'], function () {
-    $.event.special['swipe' + this] = { setup: function(){
-      $(this).on('swipe', $.noop);
-    } };
+  $.each(['left', 'up', 'down', 'right'], function (i, name) {
+    $.event.special['swipe' + this] = {
+      setup: function(){
+        // Register a noop on a namespaced swipe event, this will call setup()
+        // See https://learn.jquery.com/events/event-basics/#namespacing-events
+        $(this).on('swipe.internal' + name, $.noop);
+      },
+      teardown: function() {
+        $(this).off('swipe.internal' + name);
+      }
+    };
   });
 }));
