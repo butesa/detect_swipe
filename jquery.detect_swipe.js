@@ -67,6 +67,10 @@
       isMoving = true;
       this.addEventListener('touchmove', onTouchMove, false);
       this.addEventListener('touchend', onTouchEnd, false);
+    } else {
+      // Ignore move & end events if more than one touch
+      this.removeEventListener('touchmove', onTouchMove);
+      this.removeEventListener('touchend', onTouchEnd);
     }
   }
 
